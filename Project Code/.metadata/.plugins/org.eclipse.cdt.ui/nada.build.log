@@ -1,0 +1,64 @@
+??:??:?? **** Incremental Build of configuration Debug for project nada ****
+make all 
+Building file: ../nada.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=16000000UL -MMD -MP -MF"nada.d" -MT"nada.o" -c -o "nada.o" "../nada.c"
+../nada.c:10:18: error: gpio.h: No such file or directory
+../nada.c:11:33: error: External_Interrupts.h: No such file or directory
+../nada.c:17: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'g_Sec'
+../nada.c:18: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'g_Min'
+../nada.c:19: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'g_Hour'
+../nada.c:24: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'g_Interrupt_Flag'
+../nada.c: In function 'main':
+../nada.c:42: warning: implicit declaration of function 'GPIO_setPortDirection'
+../nada.c:42: error: 'PORTA_ID' undeclared (first use in this function)
+../nada.c:42: error: (Each undeclared identifier is reported only once
+../nada.c:42: error: for each function it appears in.)
+../nada.c:44: error: 'PORTC_ID' undeclared (first use in this function)
+../nada.c:48: warning: implicit declaration of function 'INT0_Init'
+../nada.c:49: warning: implicit declaration of function 'INT1_Init'
+../nada.c:50: warning: implicit declaration of function 'INT2_Init'
+../nada.c:52: warning: implicit declaration of function 'SET_BIT'
+../nada.c:52: error: 'SREG' undeclared (first use in this function)
+../nada.c:52: error: 'I_BIT' undeclared (first use in this function)
+../nada.c:58: error: 'g_Interrupt_Flag' undeclared (first use in this function)
+../nada.c: In function 'Timer1_CTC_Init':
+../nada.c:75: error: 'TCNT1' undeclared (first use in this function)
+../nada.c:77: error: 'OCR1A' undeclared (first use in this function)
+../nada.c:79: error: 'TIMSK' undeclared (first use in this function)
+../nada.c:79: error: 'OCIE1A' undeclared (first use in this function)
+../nada.c:88: error: 'TCCR1A' undeclared (first use in this function)
+../nada.c:88: error: 'FOC1A' undeclared (first use in this function)
+../nada.c:88: error: 'COM1A1' undeclared (first use in this function)
+../nada.c:95: error: 'TCCR1B' undeclared (first use in this function)
+../nada.c:95: error: 'WGM12' undeclared (first use in this function)
+../nada.c:95: error: 'CS12' undeclared (first use in this function)
+../nada.c:95: error: 'CS10' undeclared (first use in this function)
+../nada.c: In function 'StopWatch_Multiplexing_Mode':
+../nada.c:109: error: 'uint8_t' undeclared (first use in this function)
+../nada.c:109: error: expected ';' before 'timeDigits'
+../nada.c:113: error: expected ';' before 'count'
+../nada.c:113: error: 'count' undeclared (first use in this function)
+../nada.c:116: error: 'PORTA' undeclared (first use in this function)
+../nada.c:121: error: 'PORTC' undeclared (first use in this function)
+../nada.c:121: error: 'timeDigits' undeclared (first use in this function)
+../nada.c:123: warning: implicit declaration of function '_delay_ms'
+../nada.c: In function 'StopWatch_TimeProcessing':
+../nada.c:130: error: 'g_Sec' undeclared (first use in this function)
+../nada.c:133: error: 'g_Min' undeclared (first use in this function)
+../nada.c:142: error: 'g_Hour' undeclared (first use in this function)
+../nada.c: In function 'resetDigits':
+../nada.c:156: error: 'g_Sec' undeclared (first use in this function)
+../nada.c:157: error: 'g_Min' undeclared (first use in this function)
+../nada.c:158: error: 'g_Hour' undeclared (first use in this function)
+../nada.c: At top level:
+../nada.c:167: warning: return type defaults to 'int'
+../nada.c: In function 'ISR':
+../nada.c:167: warning: type of 'TIMER1_COMPA_vect' defaults to 'int'
+../nada.c:168: error: 'g_Interrupt_Flag' undeclared (first use in this function)
+../nada.c:169: warning: control reaches end of non-void function
+make: *** [nada.o] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+
+??:??:?? Build Failed. 37 errors, 9 warnings. (took 151ms)
+

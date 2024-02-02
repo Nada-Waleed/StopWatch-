@@ -1,0 +1,50 @@
+/*
+ * test.c
+ *
+ *  Created on: ٢٩‏/٠١‏/٢٠٢٤
+ *      Author: Nada Waleed
+ */
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+void Timer1_CTC_INT(void){
+
+}
+ISR(INT0_vect)
+{
+
+}
+void INT0_fun(void){
+	MCUCR |=(1<<ISC01);
+	GICR  |= (1<<INT0);
+	SREG |=(1<<7);
+}
+void INT1_fun(void){
+
+}
+void INT2_fun(void){
+
+}
+
+int main(){
+
+	 // Set 7447 decoder input pins as output
+	    DDRC |= 0x0F;
+
+	    // Set enable/disable pins for the six 7-segment displays as output
+	    DDRA |= 0x3F;
+
+	    // Set INT0 pin as input with internal pull-up resistor enabled
+	    DDRD &= ~(1 << PD2);
+	    PORTD |= (1 << PD2);
+
+	    // Set INT1 pin as input with external pull-down resistor enabled
+	    DDRD &= ~(1 << PD3);
+	    PORTD &= ~(1 << PD3);
+
+	    // Set INT2 pin as input with internal pull-up resistor enabled
+	    DDRB &= ~(1 << PB2);
+	    PORTB |= (1 << PB2);
+
+ }
+

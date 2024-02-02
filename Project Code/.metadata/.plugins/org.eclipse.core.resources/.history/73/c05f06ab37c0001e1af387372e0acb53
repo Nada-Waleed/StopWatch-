@@ -1,0 +1,131 @@
+/*
+ * test.c
+ *
+ *  Created on: ٢٩‏/٠١‏/٢٠٢٤
+ *      Author: Nada Waleed
+ */
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+
+unsigned char g_tick = 0 ;
+unsigned char num = 0;
+
+unsigned char g_Sec = 0;       /* Global variable that represent Seconds count */
+unsigned char  g_Min = 0;       /* Global variable that represent Minutes count */
+unsigned char  g_Hour = 0;      /* Global variable that represent Hours count */
+unsigned char g_Interrupt_Flag = 0;
+/*INT0*/
+ISR(INT0_vect)
+{
+	g_Sec = 0;
+	g_Min = 0;
+	g_Hour = 0;      /* Reset all Stop-Watch digits to start from the beginning again */
+
+	PORTC &= 0xF0;       /* Clear all 7-Segment displays */
+
+	_delay_ms(30);       /* Just a 30ms delay due to Button-debouncing */
+}
+ISR(INT1_vect)
+{
+	/* Configure timer control register TCCR1B:
+	 * No clock source (Timer/Counter stopped)
+	 * CS10=0 CS11=0 CS12=0
+	 */
+	TCCR1B &= ~(1 << CS10);
+	TCCR1B &= ~(1 << CS11);
+	TCCR1B &= ~(1 << CS12);
+}
+ISR(INT2_vect)
+{
+	/* Configure timer control register TCCR1B:
+		 * Clock Source ON again (F_CLK/1024 (From prescaler))
+		      CS10=1 CS11=0 CS12=1
+		 */
+
+		/* Check if bit (CS10) in register (TCCR1B) is cleared or not */
+		if (!(TCCR1B &(1<<CS10)))
+		{
+			TCCR1B |= (1 << CS10);
+		}
+
+		/* Check if bit (CS12) in register (TCCR1B) is cleared or not */
+		if (!(TCCR1B &(1<<CS12)))
+		{
+			TCCR1B |= (1 << CS12);
+		}
+}
+void INT0_Init(void){
+	MCUCR &=~(1<<ISC00);// Trigger INT0 with the falling edge
+	MCUCR |=(1<<ISC01); // Trigger INT0 with the falling edge
+	GICR  |= (1<<INT0); // Enable external interrupt pin INT0
+	SREG |=(1<<7);      // Enable interrupts by setting I-bit
+}
+/*INT1*/
+void INT1_Init(void){
+	MCUCR |= (1<<ISC11)|(1<<ISC10); // Trigger INT1 with the rising edge
+	GICR  |= (1<<INT1);    // Enable external interrupt pin INT1
+	SREG  |= (1<<7);       // Enable interrupts by setting I-bit
+}
+/*INT2*/
+void INT2_Init(void){
+	MCUCSR &= ~(1<<ISC2);     // Trigger INT2 with the falling edge
+	GICR   |= (1<<INT2);	 // Enable external interrupt pin INT2
+	SREG   |= (1<<7);        // Enable interrupts by setting I-bit
+}
+/*Timer1 CTC mode*/
+void Timer1_CTC_Init(void)
+{
+	TCNT1 = 0;              /* Set timer1 initial count to zero */
+
+	OCR1A = 977;            /* Set the Compare value to 977 ( To tigger an interrupt each second ) */
+
+	TIMSK = (1 << OCIE1A);  /* Enable Timer1 Compare A Interrupt */
+
+	/* Configure timer control register TCCR1A:
+	 * 1. Clear OC1A/OC1B on compare match (Set output to low level)
+	      COM1A1=1 COM1A0=0 COM1B0=0 COM1B1=1
+
+	 * 2. FOC1A=1 FOC1B=0
+	 * 3. CTC Mode WGM10=0 WGM11=0 (Mode Number 4)
+	 */
+	TCCR1A = (1 << FOC1A) | (1 << COM1A1);
+
+	/* Configure timer control register TCCR1B:
+	 * 1. CTC Mode WGM12=1 WGM13=0 (Mode Number 4)
+	 * 2. Prescaler = F_CPU/1024
+	      CS10=1 CS11=0 CS12=1
+	 */
+	TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
+}
+int main(){
+
+	 // Set 7447 decoder input pins as output
+	    DDRC |= 0x0F;
+
+	    // Set enable/disable pins for the six 7-segment displays as output
+	    DDRA |= 0x3F;
+
+	    // Set INT0 pin as input with internal pull-up enabled
+	    DDRD &= ~(1 << PD2);
+	    PORTD |= (1 << PD2);
+
+	    // Set INT1 pin as input with external pull-down enabled
+	    DDRD &= ~(1 << PD3);
+	    PORTD &= ~(1 << PD3);
+
+	    // Set INT2 pin as input with internal pull-up enabled
+	    DDRB &= ~(1 << PB2);
+	    PORTB |= (1 << PB2);
+
+	    Timer1_CTC_Init();    /* TIMER1 Compare mode */
+
+	    INT0_Init();          /* INT0 RESET interrupt */
+	    INT1_Init();          /* INT1 PAUSE interrupt */
+	    INT2_Init();          /* INT2 RESUME interrupt */
+
+
+
+
+}
+

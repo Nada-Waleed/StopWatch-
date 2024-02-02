@@ -1,0 +1,20 @@
+??:??:?? **** Build of configuration Debug for project GPT ****
+make all 
+Building file: ../gpt.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=16000000UL -MMD -MP -MF"gpt.d" -MT"gpt.o" -c -o "gpt.o" "../gpt.c"
+../gpt.c:8: warning: large integer implicitly truncated to unsigned type
+../gpt.c: In function 'display_time':
+../gpt.c:97: warning: implicit declaration of function '_delay_ms'
+../gpt.c:101: warning: implicit declaration of function '_delay_us'
+../gpt.c: In function 'main':
+../gpt.c:147: error: 'EIMSK' undeclared (first use in this function)
+../gpt.c:147: error: (Each undeclared identifier is reported only once
+../gpt.c:147: error: for each function it appears in.)
+../gpt.c:150: error: 'EICRA' undeclared (first use in this function)
+../gpt.c:150: error: expected declaration or statement at end of input
+make: *** [gpt.o] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+
+??:??:?? Build Failed. 4 errors, 3 warnings. (took 346ms)
+
